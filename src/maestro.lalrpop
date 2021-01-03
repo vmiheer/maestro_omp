@@ -3,9 +3,11 @@ use crate::maestro_ast::Directive;
 
 grammar;
 
-pub Directive: Box<Directive> = {
-    "SpatialMap" "(" <sz: Num> "," <ofs: Num> ")" <dim:Varid> ";" => Box::new( Directive::SpacialMap { dimention: dim, size: sz, offset: ofs }),
-    "TemporalMap" "(" <sz: Num> "," <ofs: Num> ")" <dim:Varid> ";" => Box::new( Directive::SpacialMap { dimention: dim, size: sz, offset: ofs })
+DirectiveStack : Vec<Directive> = <Directive+> => <>; 
+
+pub Directive: Directive = {
+    "SpatialMap" "(" <sz: Num> "," <ofs: Num> ")" <dim:Varid> ";" => Directive::SpacialMap { dimention: dim, size: sz, offset: ofs },
+    "TemporalMap" "(" <sz: Num> "," <ofs: Num> ")" <dim:Varid> ";" => Directive::SpacialMap { dimention: dim, size: sz, offset: ofs }
 }
 
 pub Num: u32 = <s:r"[0-9]+"> => u32::from_str(s).unwrap();
